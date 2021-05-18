@@ -5,12 +5,15 @@ import { Modal, Button } from "antd";
 import axios from "axios";
 import { JsonEditor as Editor } from "jsoneditor-react";
 import "jsoneditor-react/es/editor.min.css";
+import {toast} from "react-toastify";
 
 const HistoryTable = ({ fileData, selectedFile }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [singleData, setSingleData] = useState({});
+    const [tableContent, setTableContent] = useState({data:[]})
   useEffect(() => {
     console.log(fileData, "table files");
+      setTableContent(fileData);
   }, [fileData]);
 
   const columns = [
@@ -46,33 +49,44 @@ const HistoryTable = ({ fileData, selectedFile }) => {
       dataIndex: "commitMessage",
     },
     {
-        title: "Version Content",
-        dataIndex: "vcon",
-        key: "vcon",
-        render: (vcon) => (
+        title: "Actions",
+        dataIndex: "actionData",
+        key: "actionData",
+        render: (actionData) => (
           <Space size="middle">
             <span
               style={{ color: "purple", cursor: "pointer" }}
-              onClick={() => getContent(vcon)}
+              onClick={() => getContent(actionData.vcon)}
             >
-              Ver
+              Get
             </span>
+              <>
+                  {actionData.currentVersion !== actionData.vcon &&
+                  <span
+                      style={{color: "purple", cursor: "pointer"}}
+                      onClick={() => revert({name:actionData.name, version:actionData.vcon})}
+                  >
+              Revert
+            </span>
+                  }
+                  </>
+
           </Space>
         ),
       },
   ];
 
   const data = [
-    ...(fileData &&
-      fileData.map((m, ind) => ({
+    ...(tableContent && tableContent.data &&
+        tableContent.data.map((m, ind) => ({
         key: ind + 1,
         id: ind + 1,
         name: m.name,
-        version: m.version,
+        version: m.version + `${tableContent.currentVersion === m.version ? "(Current)" : ""}`,
         modifiedBy: m.modifiedBy,
         modifiedDate: moment(m.modifiedDate).format("MMMM Do YYYY, h:mm:ss a"),
         commitMessage: m.commitMessage,
-        vcon: m.version,
+        actionData: {vcon: m.version, currentVersion: tableContent.currentVersion,name: m.name},
       }))),
   ];
 
@@ -87,6 +101,19 @@ const HistoryTable = ({ fileData, selectedFile }) => {
         showModal();
       });
   };
+
+  const revert = async (revertData) => {
+      await axios
+          .post(
+              `http://localhost:8081/jsonVersionFileSystem/api/revertFileContent`,
+              {name:revertData.name,version:revertData.version}
+          )
+          .then((res) => {
+              console.log(res);
+              setTableContent(res.data);
+          });
+  }
+
 
   const showModal = () => {
     setIsModalVisible(true);

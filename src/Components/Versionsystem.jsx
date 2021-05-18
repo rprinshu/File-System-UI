@@ -110,7 +110,7 @@ const Versionsystem = ({ }) => {
               />
             </div>
             <div className="create-button">
-              <span onClick={submitCreateProject}>Create</span>
+              <span onClick={submitCreateProject}>Revert</span>
             </div>
           </div>
         )}
