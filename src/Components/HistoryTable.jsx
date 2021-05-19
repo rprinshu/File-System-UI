@@ -141,7 +141,7 @@ const HistoryTable = ({ fileData, selectedFile }) => {
       >
         <div style={{ padding: "3rem" }}>
           {Object.keys(singleData).length > 0 && (
-            <Editor value={singleData} onChange={() => {}} />
+            <Editor key={singleData.fileTimestamp} value={singleData} onChange={() => {}} />
           )}
         </div>
       </Modal>

@@ -33,7 +33,7 @@ const Files = () => {
           </div>
       <div className="files-cont">
           {
-              files.length>0 && files.map((m,ind)=>(<span className="files-data">{ind+1}{"."}{" "}{m.name}</span>))
+              files.length>0 && files.map((m,ind)=>(<span key={ind} className="files-data">{ind+1}{"."}{" "}{m.name}</span>))
           }
       </div>
            

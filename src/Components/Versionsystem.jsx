@@ -65,7 +65,7 @@ const Versionsystem = ({ }) => {
       <div className="fetch">
         <div onClick={openProject} className="box">
           <span className="box-1">
-            <i class="fas fa-plus-circle"></i>
+            <i className="fas fa-plus-circle"></i>
           </span>
           <span className="box-2">File</span>
         </div>
@@ -81,7 +81,7 @@ const Versionsystem = ({ }) => {
       >
         <div className="x">
           <span onClick={close}>
-            <i class="fas fa-times"></i>
+            <i className="fas fa-times"></i>
           </span>
         </div>
         {project && (

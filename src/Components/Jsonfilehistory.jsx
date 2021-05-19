@@ -83,8 +83,8 @@ const Jsonfilehistory = () => {
                 }
               >
                 {filehistory.length > 0 &&
-                  filehistory.map((m) => (
-                    <option value={m.name}>{m.name}</option>
+                  filehistory.map((m,index) => (
+                    <option key={index} value={m.name}>{m.name}</option>
                   ))}
               </Select>
             </div>
