@@ -10,7 +10,7 @@ const { Option } = Select;
 const Jsonfilehistory = () => {
   const [filehistory, setfilehistory] = useState([]);
   const [selectedfile, setSelectedfile] = useState("");
-  const [filesContent, setFilesContent] = useState([]);
+  const [filesContent, setFilesContent] = useState({data:[]});
 
   useEffect(() => {
     console.log("Connect");
@@ -40,7 +40,7 @@ const Jsonfilehistory = () => {
       )
       .then((res) => {
         console.log(res, "response");
-        setFilesContent(res.data.data);
+        setFilesContent(res.data);
       });
   };
 
@@ -83,8 +83,8 @@ const Jsonfilehistory = () => {
                 }
               >
                 {filehistory.length > 0 &&
-                  filehistory.map((m) => (
-                    <option value={m.name}>{m.name}</option>
+                  filehistory.map((m,index) => (
+                    <option key={index} value={m.name}>{m.name}</option>
                   ))}
               </Select>
             </div>
@@ -93,9 +93,8 @@ const Jsonfilehistory = () => {
          {
           <div className="table-cont">
             <HistoryTable 
-            fileData={filesContent} 
+            fileData={filesContent}
             selectedFile={selectedfile}
-
             />
           </div>
         } 
